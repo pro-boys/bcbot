@@ -26,4 +26,4 @@ module.exports = Object.freeze({
       NAME: "@Bhadoo3_bot"
     }
 });
-// Heroku Account ID PASSWORD kavita@gtb.org.in katehra@1
+// Heroku Account ID PASSWORD varunswami.mba@gtb.org.in Bhadoo@1 it
