@@ -13,7 +13,7 @@ import dlUtils = require('../download_tools/utils');
  */
 export function listFiles (fileName:string, callback:(err:string, message:string)=> void): void {
   // Uncommenting the below line will prevent users from asking to list all files
-  // if (fileName === '' || fileName ==='*' || fileName === '%') return;
+  if (fileName === '' || fileName ==='*' || fileName === '%') return;
 
   driveAuth.call((err, auth) => {
     if (err) {
@@ -91,7 +91,7 @@ function generateFilesListMessage (files:any[]): string {
 
     }
   } else {
-    message = 'There are no files matching your parameters';
+    message = 'There are no files matching your search query.';
   }
   return message;
 }

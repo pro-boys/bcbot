@@ -36,9 +36,11 @@ function setEventCallback(regexp: RegExp, regexpNoName: RegExp,
 setEventCallback(eventRegex.commandsRegex.start, eventRegex.commandsRegexNoName.start, (msg) => {
   if (msgTools.isAuthorized(msg) < 0) {
     // msgTools.sendUnauthorizedMessage(bot, msg);
-    msgTools.sendMessage(bot, msg, 'Bot is not usable Outside @torrentdrive group', -1);
+    msgTools.sendMessage(bot, msg, 'Bot is not usable outside @BhadooCloud group', -1);
   } else {
-    msgTools.sendMessage(bot, msg, 'Never add A dead Torrent', -1);
+    msgTools.sendMessage(bot, msg,
+                         'Welcome to @BhadooCloud Group.\n\nVisit https://t.me/BhadooCloud/39 for updates in Group.',
+                         -1);
   }
 });
 
@@ -303,11 +305,22 @@ function prepDownload(msg: TelegramBot.Message, match: string, isTar: boolean): 
       console.log(`gid: ${gid} download:${match}`);
       // Wait a second to give aria2 enough time to queue the download
       setTimeout(() => {
-        dlManager.setStatusLock(msg, sendStatusMessage);
+        // dlManager.setStatusLock(msg, sendStatusMessage);
+        dlManager.setStatusLock(msg, uriAdded);
       }, 1000);
     }
   });
 
+}
+
+/**
+ * 
+ * Added mirror function
+ * send a added mirror msg --- added by @aryanvikash
+ */
+
+function uriAdded(msg: TelegramBot.Message): any{
+  msgTools.sendMessage(bot, msg, 'URI Added 😊,\nClick /mirrorstatus to get Status.', -1);
 }
 
 /**
@@ -574,7 +587,6 @@ function initAria2(): void {
   ariaTools.setOnDownloadError(ariaOnDownloadError);
 }
 
-
 function driveUploadCompleteCallback(err: string, gid: string, url: string, filePath: string, fileName: string, fileSize: number): void {
   var finalMessage;
   if (err) {
@@ -586,10 +598,16 @@ function driveUploadCompleteCallback(err: string, gid: string, url: string, file
     console.log(`${gid}: Uploaded `);
     if (fileSize) {
       var fileSizeStr = downloadUtils.formatSize(fileSize);
-      finalMessage = `<a href='${url}'>${fileName}</a> (${fileSizeStr})`;
+      if(url.indexOf("/folders/") > -1){
+        var rawurl = constants.INDEX_DOMAIN + fileName + "/";
+      }else{
+        var rawurl = constants.INDEX_DOMAIN + fileName ;
+      }
+      var indexurl = encodeURI(rawurl) ;
+      finalMessage = `GDrive Link: <a href='${url}'>${fileName}</a> (${fileSizeStr}) \n\nDo not Share Direct Link. \n\nTo Share Use: \n\n<a href='${indexurl}'>${fileName}</a>`;
     } else {
-      finalMessage = `<a href='${url}'>${fileName}</a>`;
+      finalMessage = `GDrive Link: <a href='${url}'>${fileName}</a> \n\nDo not Share Direct Link. \n\nTo Share Use: \n\n<a href='${indexurl}'>${fileName}</a>`;
     }
     cleanupDownload(gid, finalMessage, url);
+    }
   }
-}
