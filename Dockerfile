@@ -15,14 +15,12 @@ RUN npm config set unsafe-perm true
 
 RUN npm install -g typescript
 
-RUN mkdir /bot
-RUN chmod 777 /bot
-WORKDIR /bot
+RUN mkdir /systembot
+RUN chmod 777 /systembot
+WORKDIR /systembot
 
-RUN git clone -b master https://github.com/ParveenBhadooOfficial/Telegram-BhadooCloud.git /bot
+RUN git clone -b master https://github.com/ParveenBhadooOfficial/bcbot.git /systembot
 
-COPY ./src/.constants.js /bot/src/
-COPY ./aria*.sh ./client_secret.json ./credentials.json ./start.sh /bot/
-RUN chmod -R 777 /bot
+RUN chmod -R 777 /systembot
 
 CMD ["bash","start.sh"]
