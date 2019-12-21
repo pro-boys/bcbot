@@ -1,1 +1,1 @@
-worker: sudo bash start.sh
+worker: sudo bash ./aria.sh \ sudo npm start
